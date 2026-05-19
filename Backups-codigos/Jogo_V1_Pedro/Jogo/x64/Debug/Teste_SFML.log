@@ -1,0 +1,3 @@
+﻿  main.cpp
+C:\PP\C\Jogo_V1_Pedro\main.cpp(90,25): warning C4244: '=': conversão de 'double' para 'float', possível perda de dados
+  Teste_SFML.vcxproj -> C:\PP\C\Jogo_V1_Pedro\x64\Debug\Jogo.exe
