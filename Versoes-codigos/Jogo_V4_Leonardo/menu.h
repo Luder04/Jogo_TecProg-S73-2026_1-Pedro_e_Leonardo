@@ -6,7 +6,7 @@
 class Menu : public Ente {
 private:
     Jogo* pJog;
-    Gerenciadores::GerenciadorColisoes GC;
+    //Gerenciadores::GerenciadorColisoes GC;
 
 public:
     Menu();
