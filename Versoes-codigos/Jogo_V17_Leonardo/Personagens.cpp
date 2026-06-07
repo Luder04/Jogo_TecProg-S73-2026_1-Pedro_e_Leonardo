@@ -20,7 +20,7 @@ const int Personagem::getVidas() {
 void Personagem::setVidas(int n){
     num_vidas=n;
 }
-Jogador::Jogador() : Personagem(), pontos(0), forca_pulo(16), max_vidas(2), podePular(true), tempoInvencivel(0.2f), salvo(false) {
+Jogador::Jogador() : Personagem(), pontos(0), vely(0), velx(0), forca_pulo(16), max_vidas(2), podePular(true), tempoInvencivel(0.2f), salvo(false) {
 	num_vidas=max_vidas;
 	sizex = 25.0f;
 	sizey = 50.0f;
@@ -36,6 +36,7 @@ Jogador::~Jogador() {}
 void Jogador::colidir() {}
 void Jogador::executar() {
 
+	float gravidade = 1;
 	vely -= gravidade;
 	//velx = 0;
 
@@ -69,6 +70,11 @@ void Jogador::mover(float velx, float vely) {
 	y += vely;
 	pFig->move(velx, vely);
 }
+void Jogador::setPosition(float xNew, float yNew) {
+	x = xNew;
+	y = yNew;
+	pFig->setPosition(xNew, yNew);
+}
 
 void Jogador::operator--() {
 	if (relogioDano.getElapsedTime().asSeconds() >= tempoInvencivel) {
@@ -97,7 +103,7 @@ void Jogador::reset(){
 
 
 // Inimigo
-Inimigo::Inimigo() : Personagem(), nivel_maldade(rand() % 100 + 1) {
+Inimigo::Inimigo() : Personagem(), nivel_maldade(rand() % 100 + 1), velx(3) {
 
 }
 Inimigo::~Inimigo() {
@@ -111,23 +117,17 @@ void Inimigo::salvarDataBuffer() {
 float Inimigo::getVelx() {
 	return velx;
 }
+
 void Inimigo::setVelx(float newVelx) {
 	velx = newVelx;
 }
-float Inimigo::getVely() {
-	return vely;
-}
-void Inimigo::setVely(float newVely) {
-	velx = newVely;
-}
 
-//INIMIGO FACIL
+//Inimigo facil
 Goomba::Goomba() : Inimigo(), raio(10) {
-	x = 300+200*(rand()%5)+rand()%60;
+	sizex = 25.0f;
+	sizey = 25.0f;
+	x = 400+rand()%800;
 	y = 200;
-	velx=3 + 2*nivel_maldade/100.0;
-
-
 	num_vidas = 1;
 	sf::CircleShape* shape = new sf::CircleShape(raio);
 	//sf::RectangleShape* shape = new sf::RectangleShape(sf::Vector2f(sizex, sizey));
@@ -140,134 +140,27 @@ Goomba::~Goomba() {
 
 }
 
-void Goomba::danificar(Jogador* pJog) {
-    pJog->operator--();
+void Goomba::danificar(Jogador* p) {
+	p->operator--();
 }
-
 void Goomba::executar() {
-	if(y>200){
-        vely -= gravidade;
-	} else {
-        vely=0;
-	}
-
-	if (x < 200 && velx < 0) {
+	if (x < 400 && velx < 0) {
 		velx = -velx;
 	}
-	if (x > 1150 && velx > 0) {
+	if (x > 1000 && velx > 0) {
 		velx = -velx;
 	}
-    if(rand()%100==0){ //pulinho aleatório
-        vely=4;
-    }
-	//x = pFig->getPosition().x;
-	mover(velx,vely);
-	//pFig->move(velx, 0);
 
-	/*if (num_vidas > 0) {
-		desenhar();
-	}*/
+	x = pFig->getPosition().x;
+	pFig->move(velx, 0);
+
+	if (num_vidas > 0) {
+		//desenhar();
+	}
 }
 void Goomba::salvar() {
 	Inimigo::salvarDataBuffer();
 }
 void Goomba::mover(float velx, float vely) {
-    x += velx;
-	y += vely;
-	pFig->move(velx, vely);
-}
-
-//INIMIGO MEDIO
-Inim_Medio::Inim_Medio() : Inimigo(), tamanho(0) {
-
-    tamanho=10+rand()%6;
-	x = 200+rand()%950;
-	y = 300+rand()%100;
-	velx=2+ 5*nivel_maldade/100.0;
-
-	num_vidas = 1;
-	sf::RectangleShape* shape = new sf::RectangleShape(sf::Vector2f(tamanho, 4*tamanho));
-	//sf::RectangleShape* shape = new sf::RectangleShape(sf::Vector2f(sizex, sizey));
-	shape->setFillColor(sf::Color(0xFF7F27FF));
-	shape->setPosition(x, y);
-
-	pFig = shape;
-}
-Inim_Medio::~Inim_Medio() {
-
-}
-
-void Inim_Medio::danificar(Jogador* pJog) {
-    pJog->operator--();
-}
-
-void Inim_Medio::executar() {
-	if (x < 200 && velx < 0) {
-		velx = -velx;
-	}
-	if (x > 1150 && velx > 0) {
-		velx = -velx;
-	}
-
-	x = pFig->getPosition().x;
-	pFig->move(velx, 0);
-
-	if (num_vidas > 0) {
-		//desenhar();
-	}
-}
-void Inim_Medio::salvar() {
-	Inimigo::salvarDataBuffer();
-}
-void Inim_Medio::mover(float velx, float vely) {
-
-}
-
-
-
-
-//CHEFAO
-Chefao::Chefao() : Inimigo(), forca(0) {
-
-    forca=2+rand()%3;
-	x = 600+rand()%500;
-	y = 300+rand()%100;
-	velx=0.4+ 0.9*nivel_maldade/100.0;
-
-	num_vidas = forca;
-	sf::RectangleShape* shape = new sf::RectangleShape(sf::Vector2f(40,80));
-	//sf::RectangleShape* shape = new sf::RectangleShape(sf::Vector2f(sizex, sizey));
-	shape->setFillColor(sf::Color(0x6D9EFFFF));
-	shape->setPosition(x, y);
-
-	pFig = shape;
-}
-Chefao::~Chefao() {
-
-}
-
-void Chefao::danificar(Jogador* pJog) {
-    pJog->operator--();
-}
-
-void Chefao::executar() {
-	if (x < 500 && velx < 0) {
-		velx = -velx;
-	}
-	if (x > 1150 && velx > 0) {
-		velx = -velx;
-	}
-
-	x = pFig->getPosition().x;
-	pFig->move(velx, 0);
-
-	if (num_vidas > 0) {
-		//desenhar();
-	}
-}
-void Chefao::salvar() {
-	Inimigo::salvarDataBuffer();
-}
-void Chefao::mover(float velx, float vely) {
 
 }

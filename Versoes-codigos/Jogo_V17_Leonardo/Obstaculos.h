@@ -16,7 +16,6 @@ namespace Obstaculos {
 		virtual void executar() = 0;
 		virtual void salvar() = 0;
 		virtual void obstaculizar(Jogador* p) = 0;
-		virtual void obstaculizarInimigo(Inimigo* p)=0;
 	};
 
 	class Plataforma : public Obstaculo {
@@ -32,11 +31,11 @@ namespace Obstaculos {
 		void executar();
 		void salvar();
 		void obstaculizar(Jogador* p);
-		void obstaculizarInimigo(Inimigo* p);
 	};
 
 	class Obst_Medio : public Obstaculo {
 	private:
+		float altura;
 		float largura;
 		static int qtd_obstMedio;
 
@@ -46,27 +45,7 @@ namespace Obstaculos {
 
 		void executar();
 		void salvar();
-		void obstaculizar(Jogador* pJog);
-		void obstaculizarInimigo(Inimigo* p);
-	};
-
-
-	class Obst_Dificil : public Obstaculo {
-	private:
-		float largura;
-		static int qtd_obstDificil;
-		short int danosidade;
-		float temperatura;
-		float dT;
-
-	public:
-		Obst_Dificil();
-		~Obst_Dificil();
-
-		void executar();
-		void salvar();
-		void obstaculizar(Jogador* pJog);
-		void obstaculizarInimigo(Inimigo* p);
+		void obstaculizar(Jogador* p);
 	};
 
 }
