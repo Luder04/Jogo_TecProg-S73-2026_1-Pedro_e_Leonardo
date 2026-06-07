@@ -84,5 +84,6 @@ public:
     void criarBotao(int id_submenu,const char* nome_botao,std::function<bool()> acao_botao);
 
     void criarSubMenu(int id_submenu);
+    void gameOver();
 
 };

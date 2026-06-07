@@ -32,8 +32,6 @@ namespace Personagens {
 		int max_vidas;
 
 	public:
-		float vely;
-		float velx;
 		bool podePular;
 		float forca_pulo;
 		float forca_andar;
@@ -46,7 +44,7 @@ namespace Personagens {
 		void executar();
 		void salvar();
 		void mover(float velx, float vely);
-		void setPosition(float x, float y);
+		//void setPosition(float x, float y);
 		void operator--();
 		void operator++();
 		const int getPontos();
@@ -56,7 +54,6 @@ namespace Personagens {
 	class Inimigo : public Personagem {
 	protected:
 		int nivel_maldade;
-		float velx;
 
 	public:
 		Inimigo();
@@ -64,11 +61,13 @@ namespace Personagens {
 
 		void salvarDataBuffer();
 		virtual void executar() = 0;
-		virtual void danificar(Jogador* p) = 0;
+		virtual void danificar(Jogador* pJog) = 0;
 		virtual void salvar() = 0;
 
 		float getVelx();
 		void setVelx(float velx);
+		float getVely();
+		void setVely(float vely);
 	};
 
 	//Inimigo facil
@@ -86,4 +85,31 @@ namespace Personagens {
 		void mover(float velx, float vely);
 	};
 
+	class Inim_Medio : public Inimigo {
+	private:
+		int tamanho;
+
+	public:
+		Inim_Medio();
+		~Inim_Medio();
+
+		void danificar(Jogador* p);
+		void executar();
+		void salvar();
+		void mover(float velx, float vely);
+	};
+
+	class Chefao : public Inimigo {
+	private:
+		short int forca;
+
+	public:
+		Chefao();
+		~Chefao();
+
+		void danificar(Jogador* p);
+		void executar();
+		void salvar();
+		void mover(float velx, float vely);
+	};
 }

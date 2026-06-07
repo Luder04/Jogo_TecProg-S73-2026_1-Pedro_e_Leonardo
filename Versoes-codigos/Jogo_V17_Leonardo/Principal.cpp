@@ -15,7 +15,7 @@ void Jogo::randomizar() {
 Jogo::Jogo() : pJog1(NULL), pJog2(NULL), proxFase(0), fase1(), fase2(), menu_principal() {
 	randomizar();
 	pJog1 = new Jogador();
-	GC.setJog1(pJog1);
+	//GC.setJog1(pJog1);
 }
 
 Jogo::~Jogo() {
@@ -53,7 +53,6 @@ Jogo::~Jogo() {
 Jogador* Jogo::getJogador1() {
 	return pJog1;
 }
-
 void Jogo::executar() {
 
 	Ente::setGG(&GG);

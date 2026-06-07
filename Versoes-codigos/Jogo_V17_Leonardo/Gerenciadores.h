@@ -4,10 +4,12 @@
 #include <optional>
 #include <vector>
 #include <list>
+#include <set>
 
 class Ente;
 namespace Entidades {
 	class Entidade;
+	class Projetil;
 }
 namespace Personagens {
 	class Jogador;
@@ -45,6 +47,7 @@ namespace Gerenciadores {
 		Jogador* pJog1;
 		std::vector<Inimigo*> LI;
 		std::list<Obstaculo*> LO;
+		std::set<Projetil*> LP;
 	public:
 		GerenciadorColisoes();
 		~GerenciadorColisoes();
@@ -61,6 +64,7 @@ namespace Gerenciadores {
 		void incluirInimigo(Inimigo* pI);
 		void incluirObstaculo(Obstaculo* pO);
 		void limparListas();
+		void incluirProjetil(Projetil* pj);
 
 	};
 

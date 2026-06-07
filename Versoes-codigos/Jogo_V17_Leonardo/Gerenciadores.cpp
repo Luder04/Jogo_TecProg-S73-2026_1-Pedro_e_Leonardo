@@ -86,9 +86,9 @@ void GerenciadorColisoes::setJog1(Jogador* pJg1) {
 	}
 }
 void GerenciadorColisoes::tocandoChao() {
-	if (pJog1->gety() + pJog1->vely < 200) {
+	if (pJog1->gety() + pJog1->getvely() < 200) {
 		pJog1->podePular = true;
-		pJog1->vely = 0;
+		pJog1->setvely(0);
 		pJog1->setPosition(pJog1->getx(), 200);
 	}
 }
@@ -98,10 +98,10 @@ bool GerenciadorColisoes::verificarColisao(Entidade* pe1, Entidade* pe2) const {
     sf::FloatRect bounds1 = pe1->getFig().getGlobalBounds();
     sf::FloatRect bounds2 = pe2->getFig().getGlobalBounds();
 	if (pe1 == static_cast<Entidade*>(pJog1)) {
-		bounds1.top += pJog1->vely;
+		bounds1.top += pJog1->getvely();
 	}
 	else if (pe2 == static_cast<Entidade*>(pJog1)) {
-		bounds2.top += pJog1->vely;
+		bounds2.top += pJog1->getvely();
 	}
 
     return bounds1.intersects(bounds2);
@@ -134,26 +134,30 @@ void GerenciadorColisoes::tratarColisoesJogsInimigos() {
 				sf::FloatRect boundsJogador = pJog1->getFig().getGlobalBounds();
 
 				sf::FloatRect proxPos_Y = boundsJogador;
-				proxPos_Y.top += pJog1->vely;
+				proxPos_Y.top += pJog1->getvely();
 
 				if (proxPos_Y.intersects(boundsInimigo)) {
-					float cabecaInimigo = boundsInimigo.top + boundsInimigo.height;
+                    if(typeid(*LI[i]) == typeid(Goomba)){ //apenas goombas passam pelo check de colisao por cima (deve ter solução mais elegante que essa)
+                        float cabecaInimigo = boundsInimigo.top + boundsInimigo.height;
 
-					if (pJog1->vely <= 0.0f && boundsJogador.top >= cabecaInimigo) {
+                        if (pJog1->getvely() <= 0.0f && boundsJogador.top >= cabecaInimigo) {
+                            //colisão por cima
+                            LI[i]->operator--();
+                            LI.erase(LI.begin() + i);
+                            i--;
 
-						LI[i]->operator--();
-						LI.erase(LI.begin() + i);
-						i--;
-
-						pJog1->setPosition(pJog1->getx(), cabecaInimigo);
-						pJog1->vely = 10.0f; // Impulso para cima
-						pJog1->operator++();
-					}
-					else {
-						// Colisão lateral
-						pJog1->operator--();
-					}
-				}
+                            pJog1->setPosition(pJog1->getx(), cabecaInimigo);
+                            pJog1->setvely(10.0); // Impulso para cima
+                            pJog1->operator++();
+                        }
+                        else {
+                            // Colisão lateral
+                            LI[i]->danificar(pJog1);
+                        }
+                    } else {
+                        LI[i]->danificar(pJog1);
+                    }
+                }
 			}
 
 		}
@@ -187,13 +191,7 @@ void GerenciadorColisoes::tratarColisoesInimObstaculo() {
                     if (LI[i] != NULL) {
 
                         if (verificarColisao(static_cast<Entidade*>(pObs), static_cast<Entidade*>(LI[i]))) {
-                            sf::FloatRect boundsInimigo = LI[i]->getFig().getGlobalBounds();
-                            sf::FloatRect boundsObs = pObs->getFig().getGlobalBounds();
-
-                            if (boundsInimigo.intersects(boundsObs)) {
-
-                                LI[i]->setVelx(-LI[i]->getVelx());
-                            }
+                            pObs->obstaculizarInimigo(LI[i]);
                         }
 
                     }
@@ -201,4 +199,8 @@ void GerenciadorColisoes::tratarColisoesInimObstaculo() {
             }
 		}
 	}
+}
+
+void GerenciadorColisoes::incluirProjetil(Projetil* pj) {
+    LP.insert(pj);
 }

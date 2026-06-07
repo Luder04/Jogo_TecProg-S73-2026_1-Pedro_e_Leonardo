@@ -16,15 +16,14 @@ private:
 	Jogador* pJog1;
 	Jogador* pJog2;
 	Gerenciadores::GerenciadorGrafico GG;
-	Gerenciadores::GerenciadorColisoes GC;
-
-    FasePrimeira fase1;
-    FaseSegunda fase2;
-
-    Menu menu_principal;
+	//Gerenciadores::GerenciadorColisoes GC;
 
 public:
 	int proxFase;
+	FasePrimeira fase1;
+    FaseSegunda fase2;
+
+    Menu menu_principal;
 
 public:
 	Jogo();
