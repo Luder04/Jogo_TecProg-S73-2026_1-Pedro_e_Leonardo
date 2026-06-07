@@ -12,10 +12,8 @@ Menu::Menu() : Ente(), pJog(NULL), submenu_ativo(0), mouse_pressionado(false) {
     criarSubMenu(0);
     criarSubMenu(1);
     criarSubMenu(2);
-    criarSubMenu(3);
     criarSubTitulo(1,"NOVO JOGO");
     criarSubTitulo(2,"RANKINGS");
-    criarSubTitulo(3,"GAME OVER");
 
     //return true quando o botão faz sair do menu, return false quando continua no menu
     criarBotao(0,"NOVO JOGO",[this]() {submenu_ativo=1; return false;} );
@@ -26,7 +24,6 @@ Menu::Menu() : Ente(), pJog(NULL), submenu_ativo(0), mouse_pressionado(false) {
     criarBotao(0,"RANKINGS",[this]() {submenu_ativo = 2; return false;} );
     criarBotao(2,"VOLTAR",[this]() {submenu_ativo=0; return false;} );
     criarBotao(0,"FECHAR",[this]() {pJog->proxFase = -1; return true;} );
-    criarBotao(3,"MENU",[this]() {submenu_ativo=0; return false;} );
 }
 
 Menu::~Menu() {
@@ -43,9 +40,6 @@ Menu::~Menu() {
 
 void Menu::setJogo(Jogo* j) {
     pJog = j;
-}
-void Menu::gameOver(){
-    submenu_ativo=3;
 }
 
 void Menu::criarTitulo(const char* nome_titulo){

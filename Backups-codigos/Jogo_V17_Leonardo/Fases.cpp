@@ -47,21 +47,14 @@ void Fase::executar() {
 
     //se morreu ou apertou esc, volta para o menu:
     if (pJog1->getVidas()<1 || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)){
-
-            if(pJog1->getVidas()<1){
-                cout<<"Jogador perdeu todas as vidas! Voltando para o menu..."<<endl;
-                pJogo->menu_principal.gameOver();
-            } else {
-                cout<<"Jogador saiu do jogo! Voltando para o menu..."<<endl;
-            }
+            cout<<"Voltando para o menu..."<<endl;
             pJog1->reset();
             pJogo->proxFase = 0;
-
             limpar();
     }
 }
 void Fase::criarInimFaceis() {
-    int max_qtd_inim_facil = 5;//3 + rand() % 8;
+    int max_qtd_inim_facil = 3;//3 + rand() % 8;
     int i;
     Goomba* inim = NULL;
 
@@ -74,7 +67,7 @@ void Fase::criarInimFaceis() {
 
 }
 void Fase::criarPlataformas() {
-    int max = 6;
+    int max = 10;
 
     for (int i = 0; i < max; i++) {
         Plataforma* plat = new Plataforma();
@@ -92,7 +85,7 @@ void Fase::limpar() {
 }
 
 //FASE PRIMEIRA
-FasePrimeira::FasePrimeira() : maxInimMedios(3) {
+FasePrimeira::FasePrimeira() : maxInimMedios(10) {
 
 }
 FasePrimeira::~FasePrimeira() {
@@ -100,9 +93,8 @@ FasePrimeira::~FasePrimeira() {
 }
 void FasePrimeira::executar() {
     pJog1->setPosition(100, 200);
-    criarObstaculo();
     criarInimigos();
-
+    criarObstaculo();
 
     while (Ente::pGG->isOpen() && pJogo->proxFase == 1) {
         Ente::pGG->atualizarEventos();
@@ -123,24 +115,16 @@ void FasePrimeira::executar() {
 
 void FasePrimeira::criarInimigos() {
     criarInimFaceis();
-    criarInimMedios();
 }
 void FasePrimeira::criarObstaculo() {
     criarPlataformas();
     criarObstMedios();
 }
 void FasePrimeira::criarInimMedios() {
-    int i;
-    Inim_Medio* inim = NULL;
 
-    for (i = 0; i < maxInimMedios; i++) {
-        inim = new Inim_Medio();
-        lista_ents.incluir(static_cast<Entidade*>(inim));
-        GC.incluirInimigo(static_cast<Inimigo*>(inim));
-    }
 }
 void FasePrimeira::criarObstMedios() {
-    int max = 4;
+    int max = 3;
 
     for (int i = 0; i < max; i++) {
         Obst_Medio* lama = new Obst_Medio();
@@ -152,7 +136,7 @@ void FasePrimeira::criarObstMedios() {
 
 
 //FASE SEGUNDA
-FaseSegunda::FaseSegunda() : maxChefoes(3) {
+FaseSegunda::FaseSegunda() : maxChefoes(10) {
 
 }
 FaseSegunda::~FaseSegunda() {
@@ -166,42 +150,24 @@ void FaseSegunda::executar() {
     while (Ente::pGG->isOpen() && pJogo->proxFase == 2) {
         Ente::pGG->atualizarEventos();
         Ente::pGG->clear();
-        Ente::pGG->desenharFundo(0xC1B891FF, 0xB5785AFF);//EFE4B0 B97A57
+        Ente::pGG->desenharFundo(0xEFE4B0FF, 0xB97A57FF);
         Fase::pGG->desenharVidas(pJog1);
-        //if(rand()%100==0){ criarProjeteis(); }
         Fase::executar();
     }
 }
 
 void FaseSegunda::criarInimigos() {
-    criarInimFaceis();
-    criarChefoes();
+
 }
 void FaseSegunda::criarObstaculo() {
     criarPlataformas();
-    criarObstDificeis();
 }
-void FaseSegunda::criarChefoes() {
-    int i;
-    Chefao* inim = NULL;
-
-    for (i = 0; i < maxChefoes; i++) {
-        inim = new Chefao();
-        lista_ents.incluir(static_cast<Entidade*>(inim));
-        GC.incluirInimigo(static_cast<Inimigo*>(inim));
-    }
-}
-void FaseSegunda::criarObstDificeis() {
-    int max = 5;
-    for (int i = 0; i < max; i++) {
-        Obst_Dificil* lava = new Obst_Dificil();
-        GC.incluirObstaculo(static_cast<Obstaculo*>(lava));
-        lista_ents.incluir(static_cast<Entidade*>(lava));
-    }
+void criarChefoes() {
 
 }
-void FaseSegunda::criarProjeteis() {
-    Projetil* pj = new Projetil();
-    GC.incluirProjetil(pj);
-    lista_ents.incluir(static_cast<Entidade*>(pj));
+void criarObstDificeis() {
+
+}
+void criarProjeteis() {
+
 }

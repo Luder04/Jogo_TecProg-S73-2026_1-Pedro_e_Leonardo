@@ -13,14 +13,10 @@ namespace Entidades {
 		float sizex;
 		float sizey;
 
-        float vely;
-		float velx;
-
 		ostream buffer;
 		bool ehObstaculo;
 
 		static int fase;
-		static const float gravidade;
 
 	public:
 		Entidade();
@@ -32,11 +28,6 @@ namespace Entidades {
 		float gety();
 		float getSizex();
 		float getSizey();
-		float getvelx();
-		float getvely();
-		void setvelx(float x);
-		void setvely(float y);
-		void setPosition(float x, float y);
 		virtual const int getVidas() = 0;
 		const bool getObs();
 		ostream& getBuffer();
@@ -50,16 +41,5 @@ namespace Entidades {
 
 	};
 
-    class Projetil : public Entidade{
-    protected:
-        bool ativo;
 
-    public:
-        Projetil();
-        ~Projetil();
-
-        void executar();
-        void salvar();
-        const int getVidas();
-    };
 }

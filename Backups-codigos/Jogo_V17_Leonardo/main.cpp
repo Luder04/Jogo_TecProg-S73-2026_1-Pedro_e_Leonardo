@@ -1,9 +1,11 @@
-//Versao 18
-//Criado obstáculo difícil, inimigo médio, chefão (chefão ainda está incompleto).
-//Criada a base para a classe projétil
-//Inimigo fácil agora dá pulinhos aleatórios (porque um dos requisitos do trabalho é que os inimigos devem sofrer com a gravidade)
-//Várias alterações menores diversas para melhorar o código...
-//Adicionado sub menu de game over no menu principal.
+//Versao 17
+//Adicionado obstáculo médio (lama, deixa o jogador lento)
+//O inimigo fácil agora é um círculo (já que o tamanho dele é definido como um raio). Classe ente foi ajustada para permitir isso.
+//Ajustadas fórmulas de spawn dos inimigos e obstáculos (o obstáculo 1 pode ser paredes verticais ou plataformas aéreas horizontais)
+//O GC, quando detecta colisão entre jogador e obstáculo, agora chama a função obstaculizar do obstáculo, a qual trata do que deve ser feito quando essa colisão ocorre
+//Adicionada função destrutora do menu (deleta todos os submenus e botões criados dinamicamente)
+//É possível voltar ao menu apertando esc
+//Pontuação do jogador é resetada ao voltar ao menu (por morte ou apertando esc).
 
 #include "Principal.h"
 
