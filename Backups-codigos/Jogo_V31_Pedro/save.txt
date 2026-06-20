@@ -1,0 +1,26 @@
+Fase:2
+Multiplayer:1
+Jogador 0 30 0 290 363.599 25 55
+Jogador 0 30 1 60 200 25 55
+Plataforma 1 251 252.549 56 112
+Plataforma 0 457 250 56 40
+Plataforma 0 607 233 112 32
+Plataforma 0 817 200 48 96
+Plataforma 1 1003 252.549 56 88
+Plataforma 0 1242 237 120 48
+Lava 62 292 200 121 10
+Lava 91 459 200 106 10
+Lava 57 666 200 95 10
+Lava 95 861 200 112 10
+Lava 6 1065 200 103 10
+Rato 1148.24 200 5 5
+Rato 424.831 200 5 5
+Rato 408.389 200 5 5
+Rato 464.829 200 5 5
+Dragao 36 4 4 1062.51 294 50 40
+Dragao 37 3 3 871.188 319 50 40
+Dragao 38 3 3 786.929 312 50 40
+Dragao 39 3 3 949.945 378.45 50 40
+Ranking . 0
+Ranking . 0
+Ranking . 0
