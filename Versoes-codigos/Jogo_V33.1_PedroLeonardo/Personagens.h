@@ -36,10 +36,10 @@ namespace Personagens {
 		sf::Clock relogioDano;
 		float tempoInvencivel;
 		bool invulneravel;
-		bool salvo;
 		int max_vidas;
 
 	public:
+		bool salvo;
 		bool podePular;
 		float forca_pulo;
 		float forca_andar;

@@ -30,7 +30,7 @@ namespace Obstaculos {
 
 	public:
 		Plataforma();
-		Plataforma(bool movel, float x, float y, float sx, float sy);
+		Plataforma(bool movel, float velx, float vely, float x, float y, float sx, float sy);
 		~Plataforma();
 
 		void executar();

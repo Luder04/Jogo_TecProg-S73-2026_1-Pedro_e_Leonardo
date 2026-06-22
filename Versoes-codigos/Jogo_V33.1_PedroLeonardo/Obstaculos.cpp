@@ -62,7 +62,7 @@ Plataforma::Plataforma() : Obstaculo(), altura(0), largura(0), movel(false) {
     pTexture->setRepeated(true);
     setSprite();
 }
-Plataforma::Plataforma(bool nmovel, float nx, float ny, float sx, float sy) : Obstaculo(), altura(sy), largura(sx), movel(nmovel) {
+Plataforma::Plataforma(bool nmovel, float nvelx, float nvely, float nx, float ny, float sx, float sy) : Obstaculo(), altura(sy), largura(sx), movel(nmovel) {
     qtd_plats++;
 
     sizey = sy;
@@ -70,6 +70,9 @@ Plataforma::Plataforma(bool nmovel, float nx, float ny, float sx, float sy) : Ob
 
     x = nx;
     y = ny;
+
+    velx = nvelx;
+    vely = nvely;
 
     sf::RectangleShape* shape = new sf::RectangleShape(sf::Vector2f(sizex, sizey));
     shape->setFillColor(sf::Color(0xEFEFEFFF));
@@ -88,7 +91,9 @@ Plataforma::~Plataforma() {
 
 void Plataforma::salvar() {
     buffer << getTipo() << " "
-           << movel << " ";
+           << movel << " "
+           << velx << " "
+           << vely << "\n";
 	Obstaculo::salvarDataBuffer();
 }
 void Plataforma::executar() {

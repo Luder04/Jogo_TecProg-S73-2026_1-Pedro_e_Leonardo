@@ -20,7 +20,7 @@ Fase::~Fase() {
 void Fase::salvarEntidades(std::ofstream& arquivo) {
     lista_ents.salvar(arquivo);
 }
-void Fase::setJogadores(Jogador* pJog1_in,Jogador* pJog2_in) {
+void Fase::setJogadores(Jogador* pJog1_in, Jogador* pJog2_in) {
     if (pJog1_in != NULL) {
         pJog1 = pJog1_in;
         //lista_ents.setJoRatosgador(pJog1_in);
@@ -39,13 +39,14 @@ void Fase::setJogo(Jogo* j) {
     pJogo = j;
 }
 
-bool Fase::gameOver(){
-    if(pJog2==NULL){ //se for singleplayer
-        if(pJog1->getVidas()<1){
+bool Fase::gameOver() {
+    if (pJog2 == NULL) { //se for singleplayer
+        if (pJog1->getVidas() < 1) {
             return true;
         }
-    } else { //se for multiplayer
-        if(pJog1->getVidas()<1 && pJog2->getVidas()<1){
+    }
+    else { //se for multiplayer
+        if (pJog1->getVidas() < 1 && pJog2->getVidas() < 1) {
             return true;
         }
     }
@@ -67,27 +68,30 @@ void Fase::executar() {
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
         ofstream arquivo("save.txt");
+        pJog1->salvo = false;
 
         arquivo << "Fase:" << pJogo->proxFase << "\n";
         arquivo << "Multiplayer:" << pJogo->multiplayer << "\n";
         arquivo << "Pontos1:" << pJog1->getPontos() << "\n";
         if (pJog2) {
+            pJog2->salvo = false;
             arquivo << "Pontos2:" << pJog2->getPontos() << "\n";
         }
         lista_ents.salvar(arquivo);
     }
 
     //se morreu ou apertou esc, volta para o menu:
-    if (gameOver() || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)){
+    if (gameOver() || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
         recuperado = false;
-        if(gameOver()){
-            cout<<"Jogador(es) perdeu todas as vidas! Voltando para o menu..."<<endl;
+        if (gameOver()) {
+            cout << "Jogador(es) perdeu todas as vidas! Voltando para o menu..." << endl;
             pJogo->menu_principal.gameOver();
-        } else {
-            cout<<"Jogador saiu do jogo! Voltando para o menu..."<<endl;
+        }
+        else {
+            cout << "Jogador saiu do jogo! Voltando para o menu..." << endl;
         }
         pJog1->reset();
-        if(pJog2!=NULL) {
+        if (pJog2 != NULL) {
             pJog2->reset();
         }
         pJogo->proxFase = 0;
@@ -95,7 +99,7 @@ void Fase::executar() {
     }
 }
 void Fase::criarRatos() {
-    int n = maxRatos-rand()%(maxRatos-2); //isso garante que o número de ratos é sempre maior ou igual a 3 e menor ou igual ao valor máximo
+    int n = maxRatos - rand() % (maxRatos - 2); //isso garante que o número de ratos é sempre maior ou igual a 3 e menor ou igual ao valor máximo
     int i;
     Rato* inim = NULL;
 
@@ -107,7 +111,7 @@ void Fase::criarRatos() {
 
 }
 void Fase::criarPlataformas() {
-    int n=maxPlataformas-rand()%(maxPlataformas-2);
+    int n = maxPlataformas - rand() % (maxPlataformas - 2);
 
     for (int i = 0; i < n; i++) {
         Plataforma* plat = new Plataforma();
@@ -131,8 +135,8 @@ void Fase::criarCenario() {
     chao.setPosition(1600.f, 200.f);
 }
 void Fase::limpar() {
-    pJog1=NULL;
-    pJog2=NULL;
+    pJog1 = NULL;
+    pJog2 = NULL;
     lista_ents.limpar();
     GC.limparListas();
 }
@@ -173,9 +177,9 @@ void Fase::recuperar() {
         }
         else if (tipo == "Plataforma")
         {
-            float nmovel;
-            arquivo >> nmovel >> x >> y >> sx >> sy;
-            Plataforma* plat = new Plataforma(nmovel, x, y, sx, sy);
+            float nmovel, nvelx, nvely;
+            arquivo >> nmovel >> nvelx >> nvely  >> x >> y >> sx >> sy;
+            Plataforma* plat = new Plataforma(nmovel, nvelx, nvely, x, y, sx, sy);
             GC.incluirObstaculo(static_cast<Obstaculo*>(plat));
             lista_ents.incluir(static_cast<Entidade*>(plat));
         }
@@ -236,21 +240,22 @@ void FasePrimeira::executar() {
         Ente::pGG->atualizarEventos();
         Ente::pGG->clear();
         Ente::pGG->desenharFundo(ceu, chao);
-        Fase::pGG->desenharVidas(pJog1,pJog2);
+        Fase::pGG->desenharVidas(pJog1, pJog2);
 
         Fase::executar();
         //código para passar para a fase 2: (ambos os jogadores, ou apenas o que estiver vivo, devem ir para o canto direito do cenário)
-        if(pJogo->proxFase!=0){ //não executar quando o fase::executar deu gameover
-            if(pJog2==NULL){ //se for single player
+        if (pJogo->proxFase != 0) { //não executar quando o fase::executar deu gameover
+            if (pJog2 == NULL) { //se for single player
                 if (pJog1->getx() > 1250) {
                     pJogo->proxFase = 2;
                     pJog1->podePular = true;
                     limpar();
                     return;
                 }
-            } else { //se for multiplayer
+            }
+            else { //se for multiplayer
 
-                if( (pJog1->getVidas()<1 && pJog2->getx() > 1250) || (pJog2->getVidas()<1 && pJog1->getx() > 1250) || (pJog1->getx() > 1250 && pJog2->getx() > 1250) ){
+                if ((pJog1->getVidas() < 1 && pJog2->getx() > 1250) || (pJog2->getVidas() < 1 && pJog1->getx() > 1250) || (pJog1->getx() > 1250 && pJog2->getx() > 1250)) {
                     pJogo->proxFase = 2;
                     pJog1->podePular = true;
                     pJog2->podePular = true;
@@ -274,7 +279,7 @@ void FasePrimeira::criarAguias() {
     int i;
     Aguia* inim = NULL;
 
-    int n=maxAguias-rand()%(maxAguias-2);
+    int n = maxAguias - rand() % (maxAguias - 2);
 
     for (i = 0; i < n; i++) {
         inim = new Aguia();
@@ -283,7 +288,7 @@ void FasePrimeira::criarAguias() {
     }
 }
 void FasePrimeira::criarLamas() {
-    int n=maxLamas-rand()%2;
+    int n = maxLamas - rand() % 2;
 
     for (int i = 0; i < n; i++) {
         Lama* lama = new Lama();
@@ -321,13 +326,13 @@ void FaseSegunda::executar() {
         Ente::pGG->atualizarEventos();
         Ente::pGG->clear();
         Ente::pGG->desenharFundo(ceu, chao);
-        Fase::pGG->desenharVidas(pJog1,pJog2);
-        for(int i=0;i<lista_dragoes.size();i++){
-            if(lista_dragoes[i]!=NULL){
-                if (lista_dragoes[i]->getAtirar()==true && lista_dragoes[i]->getProj()){
+        Fase::pGG->desenharVidas(pJog1, pJog2);
+        for (int i = 0; i < lista_dragoes.size(); i++) {
+            if (lista_dragoes[i] != NULL) {
+                if (lista_dragoes[i]->getAtirar() == true && lista_dragoes[i]->getProj()) {
                     criarProjeteis(lista_dragoes[i]);
                 }
-                if (lista_dragoes[i]->getVidas()==0){
+                if (lista_dragoes[i]->getVidas() == 0) {
                     lista_dragoes.erase(lista_dragoes.begin() + i);
                 }
             }
@@ -335,19 +340,20 @@ void FaseSegunda::executar() {
         Fase::executar();
 
         //código para completar o jogo: (todos os bosses devem estar mortos e ambos os jogadores, ou o que estiver vivo, devem ir para o canto direito do cenário)
-        if(pJogo->proxFase!=0){
-            if(pJog2==NULL){ //se for singleplayer
+        if (pJogo->proxFase != 0) {
+            if (pJog2 == NULL) { //se for singleplayer
                 if (pJog1->getx() > 1250 && (lista_dragoes.empty())) {
-                    pJogo->menu_principal.vitoria(pJog1->getPontos()+pJog1->getVidas());
+                    pJogo->menu_principal.vitoria(pJog1->getPontos() + pJog1->getVidas());
                     pJog1->reset();
                     pJogo->proxFase = 0;
                     limpar();
                 }
-            } else { //se for multiplayer
+            }
+            else { //se for multiplayer
 
-                if( (pJog1->getVidas()<1 && pJog2->getx() > 1250) || (pJog2->getVidas()<1 && pJog1->getx() > 1250) || (pJog1->getx() > 1250 && pJog2->getx() > 1250) ){
-                    if(lista_dragoes.empty()){
-                        pJogo->menu_principal.vitoria(pJog1->getPontos()+pJog2->getPontos()+(pJog1->getVidas()+pJog2->getVidas())/2 );
+                if ((pJog1->getVidas() < 1 && pJog2->getx() > 1250) || (pJog2->getVidas() < 1 && pJog1->getx() > 1250) || (pJog1->getx() > 1250 && pJog2->getx() > 1250)) {
+                    if (lista_dragoes.empty()) {
+                        pJogo->menu_principal.vitoria(pJog1->getPontos() + pJog2->getPontos() + (pJog1->getVidas() + pJog2->getVidas()) / 2);
                         pJog1->reset();
                         pJogo->proxFase = 0;
                         limpar();
@@ -369,7 +375,7 @@ void FaseSegunda::criarObstaculo() {
 void FaseSegunda::criarDragoes() {
     int i;
     Dragao* inim = NULL;
-    int n=maxDragoes-rand()%(maxDragoes-2);
+    int n = maxDragoes - rand() % (maxDragoes - 2);
 
     for (i = 0; i < n; i++) {
         inim = new Dragao();
@@ -379,7 +385,7 @@ void FaseSegunda::criarDragoes() {
     }
 }
 void FaseSegunda::criarLavas() {
-    int n=maxLavas-rand()%(maxLavas-2);
+    int n = maxLavas - rand() % (maxLavas - 2);
     for (int i = 0; i < n; i++) {
         Lava* lava = new Lava();
         GC.incluirObstaculo(static_cast<Obstaculo*>(lava));
