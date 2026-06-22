@@ -63,15 +63,15 @@ Jogo::~Jogo() {
 	fase1.limpar();
 	fase2.limpar();
 
-    cout << "Deletando Jogador de Id: " << pJog1->getId() << " Tipo: " << typeid(*pJog1).name() << "... ";
-    delete pJog1;
-    cout << "Deletado" << endl;
-    pJog1=NULL;
+	cout << "Deletando Jogador de Id: " << pJog1->getId() << " Tipo: " << typeid(*pJog1).name() << "... ";
+	delete pJog1;
+	cout << "Deletado" << endl;
+	pJog1 = NULL;
 
-    cout << "Deletando Jogador de Id: " << pJog2->getId() << " Tipo: " << typeid(*pJog2).name() << "... ";
-    delete pJog2;
-    cout << "Deletado" << endl;
-    pJog2=NULL;
+	cout << "Deletando Jogador de Id: " << pJog2->getId() << " Tipo: " << typeid(*pJog2).name() << "... ";
+	delete pJog2;
+	cout << "Deletado" << endl;
+	pJog2 = NULL;
 }
 
 Jogador* Jogo::getJogador1() {
@@ -90,29 +90,31 @@ void Jogo::executar() {
 
 	fase2.setJogo(this);
 
-	while(GG.isOpen() && proxFase >=0){
-        switch (proxFase) {
-            case 0:
-                menu_principal.executar();
-                printf("Saindo do menu, para fase %d\n",proxFase);
-                break;
-            case 1:
-                if(multiplayer==false){
-                    fase1.setJogadores(pJog1,NULL);
-                } else {
-                    fase1.setJogadores(pJog1,pJog2);
-                }
-                fase1.executar();
-                break;
-            case 2:
-                if(multiplayer==false){
-                    fase2.setJogadores(pJog1,NULL);
-                } else {
-                    fase2.setJogadores(pJog1,pJog2);
-                }
-                fase2.executar();
-                break;
-        }
+	while (GG.isOpen() && proxFase >= 0) {
+		switch (proxFase) {
+		case 0:
+			menu_principal.executar();
+			printf("Saindo do menu, para fase %d\n", proxFase);
+			break;
+		case 1:
+			if (multiplayer == false) {
+				fase1.setJogadores(pJog1, NULL);
+			}
+			else {
+				fase1.setJogadores(pJog1, pJog2);
+			}
+			fase1.executar();
+			break;
+		case 2:
+			if (multiplayer == false) {
+				fase2.setJogadores(pJog1, NULL);
+			}
+			else {
+				fase2.setJogadores(pJog1, pJog2);
+			}
+			fase2.executar();
+			break;
+		}
 	}
 }
 
@@ -120,7 +122,7 @@ void Jogo::recuperar() {
 	Fase::recuperado = true;
 
 	ifstream arquivo("save.txt");
-	
+
 	std::string linha;
 	std::getline(arquivo, linha);
 	int fase = std::stoi(linha.substr(5));
@@ -132,8 +134,10 @@ void Jogo::recuperar() {
 	std::getline(arquivo, linha);
 	pJog1->setPontos(std::stoi(linha.substr(8)));
 
-	std::getline(arquivo, linha);
-	pJog2->setPontos(std::stoi(linha.substr(8)));
+	if (multiplayer) { 
+		std::getline(arquivo, linha); 
+		pJog2->setPontos(std::stoi(linha.substr(8))); 
+	}
 
 	int qtd_jogs_recuperados = 0;
 	bool jog1_rec = false, jog2_rec = false;
@@ -143,7 +147,6 @@ void Jogo::recuperar() {
 	{
 		if (tipo == "Jogador")
 		{
-			
 			float x, y, sx, sy;
 			bool jog2;
 			int pontos, vids;
@@ -153,7 +156,7 @@ void Jogo::recuperar() {
 			if (jog2) {
 				delete pJog2;
 
-				pJog2 = new Jogador(pontos, vids, jog2, x, y, sx, sy);	
+				pJog2 = new Jogador(pontos, vids, jog2, x, y, sx, sy);
 				jog2_rec = true;
 			}
 			else {
