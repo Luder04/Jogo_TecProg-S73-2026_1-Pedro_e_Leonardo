@@ -1,0 +1,93 @@
+#pragma once
+
+#include "Ente.h"
+#include "Gerenciadores.h"
+#include "Personagens.h"
+#include "Listas.h"
+
+class Jogo;
+
+namespace Personagens {
+	class Chefao;
+}
+
+namespace Fases {
+
+	class Fase : public Ente {
+	public:
+		Jogador* pJog1;
+		Jogador* pJog2;
+		Jogo* pJogo;
+		static const int maxRatos;
+		static const int maxPlataformas;
+		static bool recuperado;
+		static sf::Sprite chao;
+		static sf::Sprite ceu;
+	protected:
+		Listas::ListaEntidades lista_ents;
+		Gerenciadores::GerenciadorColisoes GC;
+		sf::Texture texCeu;
+		sf::Texture texChao;
+
+	public:
+		Fase();
+		~Fase();
+
+		void setJogo(Jogo* j);
+		virtual void executar();
+		virtual void limpar();
+		void setJogadores(Jogador* pJog1_in,Jogador* pJog2_in);
+		void salvarEntidades(std::ofstream& arquivo);
+		bool gameOver();
+		virtual void recuperar();
+
+	protected:
+		void criarRatos();
+		void criarPlataformas();
+		void criarCenario();
+		virtual void criarInimigos() = 0;
+		virtual void criarObstaculos() = 0;
+
+	};
+
+
+	class FasePrimeira : public Fase {
+	private:
+		const int maxAguias;
+		const int maxLamas;
+
+	public:
+		FasePrimeira();
+		~FasePrimeira();
+		void executar();
+
+	protected:
+		void criarInimigos();
+		void criarObstaculos();
+		void criarAguias();
+		void criarLamas();
+	};
+
+
+	class FaseSegunda : public Fase {
+	private:
+		const int maxDragoes;
+		const int maxLavas;
+		vector<Dragao*> lista_dragoes;
+
+	public:
+		FaseSegunda();
+		~FaseSegunda();
+		void executar();
+		void limpar() override;
+
+	protected:
+		void criarInimigos();
+		void criarObstaculos();
+		void criarDragoes();
+		void criarLavas();
+		void criarProjeteis(Dragao* pDragao);
+
+	};
+
+}
