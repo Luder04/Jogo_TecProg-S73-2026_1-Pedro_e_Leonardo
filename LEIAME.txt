@@ -1,0 +1,8 @@
+O sistema operacional utilizado para o desenvolvimento do programa foi o Windows, contudo, foi testado com êxito nos computadores da faculdade que operam com Ubuntu.
+
+Os compiladores utilizados foram o Visual Studio Community 2022 - Versão 17.14.12 e CodeBlocks - Release 20.03 gcc 8.1.0
+
+A biblioteca gráfica utilizada foi a SFML, na versão 2.5.1
+
+para rodar o programa, um projeto deve ser criado, ou no Visual Studio, ou no CodeBlocks, contendo todos os .cpp e .h pertinentes de qualquer versão disponibilizada no GitHub (de preferência a versão final). Também devem ser incluídos os .png e o .TTF da fonte para que todas as imagens do jogo apareçam. Esses arquivos devem ser colocados na mesma pasta que os .cpp e .h do Visual Studio e CodeBlocks e, se no CodeBlocks, também devem ser colocados na pasta do executável.
+Um detalhe importante, caso esteja executando no CodeBlocks, num projeto novo e num ambiente ainda não configurado, é necessário implementar os link-libraries "sfml-window", "sfml-graphics" e "sfml-system" em Projetct -> Build Options -> Debug/Release -> Linker Settings
